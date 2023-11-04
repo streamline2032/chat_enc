@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "782206365501",
+    "project_id": "chatencr-7df69",
+    "storage_bucket": "chatencr-7df69.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:782206365501:android:f05dc9f2d38f6bfd345f54",
+        "android_client_info": {
+          "package_name": "com.chatenc.chat_enc"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBntvOs7QRkOzYteUlro66tLahdowUNJdQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
