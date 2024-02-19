@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:chat_enc/screens/chat_screen.dart';
 import 'package:chat_enc/screens/registration_screen.dart';
 import 'package:chat_enc/screens/signin_screen.dart';
-import 'screens/welcome_screen.dart';
+import 'screens/home_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -28,16 +28,16 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
         debugShowCheckedModeBanner: false,
-        title: 'الدردشة المشفرة',
+        title: 'CodeLine',
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
         // home: ChatScreen(),
         initialRoute: _auth.currentUser != null
             ? ChatScreen.screenRoute
-            : WelcomeScreen.screenRoute,
+            : HomeScreen.screenRoute,
         routes: {
-          WelcomeScreen.screenRoute: (context) => WelcomeScreen(),
+          HomeScreen.screenRoute: (context) => HomeScreen(),
           SignInScreen.screenRoute: (context) => SignInScreen(),
           RegistrationScreen.screenRoute: (context) => RegistrationScreen(),
           ChatScreen.screenRoute: (context) => ChatScreen(),

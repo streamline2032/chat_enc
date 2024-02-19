@@ -4,16 +4,16 @@ import 'package:chat_enc/widgets/my_button.dart';
 import 'package:flutter/material.dart';
 
 
-class WelcomeScreen extends StatefulWidget {
-  static const String screenRoute = 'welcome_screen';
+class HomeScreen extends StatefulWidget {
+  static const String screenRoute = 'home_screen';
 
-  const WelcomeScreen({Key? key}) : super(key: key);
+  const HomeScreen({Key? key}) : super(key: key);
 
   @override
-  _WelcomeScreenState createState() => _WelcomeScreenState();
+  _HomeScreenState createState() => _HomeScreenState();
 }
 
-class _WelcomeScreenState extends State<WelcomeScreen> {
+class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,7 +31,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                   child: Image.asset('images/logo.png'),
                 ),
                 Text(
-                  'الدردشة المشفرة',
+                  'Code Line',
                   style: TextStyle(
                     fontSize: 40,
                     fontFamily: 'ElMessiri',
@@ -43,15 +43,15 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
             ),
             SizedBox(height: 30),
             MyButton(
-              color: Color(0xFF075E54)!,
-              title: 'تسجيل الدخول',
+              color: Color(0xFF1d2733)!,
+              title: 'Log in',
               onPressed: () {
                 Navigator.pushNamed(context, SignInScreen.screenRoute);
               },
             ),
             MyButton(
-              color: Color(0xFF128C7E)!,
-              title: 'التسجيل',
+              color: Color(0xFF272F3A)!,
+              title: 'registration',
               onPressed: () {
                 Navigator.pushNamed(context, RegistrationScreen.screenRoute);
               },

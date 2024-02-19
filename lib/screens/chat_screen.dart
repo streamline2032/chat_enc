@@ -1,11 +1,11 @@
 import 'dart:convert';
 
-import 'package:chat_enc/screens/welcome_screen.dart';
+import 'package:chat_enc/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import'package:cloud_firestore/cloud_firestore.dart';
 
-import '../rsa.dart';
+import '../Encryption/aes.dart';
 
 final _firestore = FirebaseFirestore.instance;
 late User signedInUser;
@@ -36,7 +36,7 @@ class _ChatScreenState extends State<ChatScreen> {
       final user = _auth.currentUser;
       if (user != null) {
         signedInUser = user;
-        print(signedInUser.email);
+        print(signedInUser.displayName);
       }
     } catch (e) {
       print(e);
@@ -57,13 +57,13 @@ class _ChatScreenState extends State<ChatScreen> {
     return Scaffold(
       backgroundColor: Color(0xFFECE5DD),
       appBar: AppBar(
-        backgroundColor: Color(0xFF075E54),
-        title: //Center(child: Text('الدردشة المشفرة')),
+        backgroundColor: Color(0xFF272F3A),
+        title: //Center(child: Text('code  line')),
         Row(
           children: [
             //Image.asset('images/logo.png', height: 25),
             SizedBox(width: 10),
-            Text('الدردشة المشفرة',
+            Text('Code Line',
               style: TextStyle(
              // fontSize: 40,
               fontFamily: 'ElMessiri',
@@ -78,10 +78,10 @@ class _ChatScreenState extends State<ChatScreen> {
               _auth.signOut();
             //  Navigator.pop(context);
               Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
-                  WelcomeScreen()), (Route<dynamic> route) => false);
+                 HomeScreen()), (Route<dynamic> route) => false);
 
             },
-            icon: Icon(Icons.login_outlined),
+            icon: Icon(Icons.adjust_outlined),
           )
         ],
       ),
@@ -95,7 +95,7 @@ class _ChatScreenState extends State<ChatScreen> {
               decoration: BoxDecoration(
                 border: Border(
                   top: BorderSide(
-                    color: Color(0xFF075E54),
+                    color: Color(0xFF272F3A),
                     width: 2,
                   ),
                 ),
@@ -104,6 +104,28 @@ class _ChatScreenState extends State<ChatScreen> {
               Row(
                 children: [
                   SizedBox(width: 10),
+                  //send message button
+                  MaterialButton(
+                    onPressed: () {
+                      String messageText2 = Aes.encAes(messageText!);
+                      messageTextController.clear();
+                      _firestore.collection("messages").add({
+                        'text' : messageText2,
+                        'sender' : signedInUser.email,
+                        'username' : signedInUser.displayName,
+                        'key32' : Aes.getkey32(),
+                        'iv16' : Aes.getiv16(),
+                        'time' : FieldValue.serverTimestamp(),
+                      });
+
+                    },
+                    minWidth: 0,
+                    padding:
+                    const EdgeInsets.only(top: 10, bottom: 10, right: 5, left: 10),
+                    shape: const CircleBorder(),
+                    color: Color(0xFF1d2733),
+                    child: const Icon(Icons.send, color: Colors.white, size: 28),
+                  ),
                   //input field & buttons
                   Expanded(
                     child: Card(
@@ -112,38 +134,7 @@ class _ChatScreenState extends State<ChatScreen> {
                       child: Row(
                         children: [
 
-                          //send message button
-                          MaterialButton(
-                            onPressed: () {
-                              //  messageText = Aes.encryptWithAESKey(value);
-                              // messageText = Aes.decryptWithAESKey(messageText!);
-                              String messageText2 = Aes.encryptAes(messageText!);
-                              messageTextController.clear();
-                              _firestore.collection("messages").add({
-                                'text' : messageText2,
-                                'sender' : signedInUser.email,
-                                'time' : FieldValue.serverTimestamp(),
-                              });
-                              /*if (_textController.text.isNotEmpty) {
-                        if (_list.isEmpty) {
-                          //on first message (add user to my_user collection of chat user)
-                          APIs.sendFirstMessage(
-                              widget.user, _textController.text, Type.text);
-                        } else {
-                          //simply send message
-                          APIs.sendMessage(
-                              widget.user, _textController.text, Type.text);
-                        }
-                        _textController.text = '';
-                      }*/
-                            },
-                            minWidth: 0,
-                            padding:
-                            const EdgeInsets.only(top: 10, bottom: 10, right: 5, left: 10),
-                            shape: const CircleBorder(),
-                            color: Color(0xFF075E54),
-                            child: const Icon(Icons.send, color: Colors.white, size: 28),
-                          ),
+
 
                           Expanded(
                               child: TextField(
@@ -159,13 +150,11 @@ class _ChatScreenState extends State<ChatScreen> {
                                 //onTap: () {
                                 //},
                                 decoration: const InputDecoration(
-                                    hintText: '..إكتب رسالتك هنا',
-                                    hintStyle: TextStyle(color: Colors.blueAccent,fontFamily: 'ElMessiri',),
+                                    hintText: '... Messaging ',
+                                    hintStyle: TextStyle(color: Color(0xFF272F3A),fontFamily: 'ElMessiri',),
                                     border: InputBorder.none),
                               )),
                           SizedBox(width: 10),
-
-
                           //adding some space
                           //SizedBox(width: mq.width * .02),
                         ],
@@ -173,50 +162,7 @@ class _ChatScreenState extends State<ChatScreen> {
                     ),
                   ),
 
-              /*Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  TextButton(
-                    onPressed: () {
-                      //  messageText = Aes.encryptWithAESKey(value);
-                      // messageText = Aes.decryptWithAESKey(messageText!);
-                      String messageText2 = Aes.ee(messageText!);
-                      messageTextController.clear();
-                      _firestore.collection("messages").add({
-                        'text' : messageText2,
-                        'sender' : signedInUser.email,
-                        'time' : FieldValue.serverTimestamp(),
 
-                      });
-                    },
-                    child: Text(
-                      'إرسال',
-                      style: TextStyle(
-                        color: Color(0xFF128C7E),
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18,
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    child: TextField(
-                      controller: messageTextController,
-                      onChanged: (value) async {
-                        messageText = value;
-
-                        print(messageText);
-                      },
-                      textAlign: TextAlign.right,
-                      decoration: InputDecoration(
-                        contentPadding: EdgeInsets.symmetric(
-                          vertical: 10,
-                          horizontal: 20,
-                        ),
-                        hintText: '...إكتب رسالتك هنا',
-                        border: InputBorder.none,
-                      ),
-                    ),
-                  ),*/
                   SizedBox(width: 10),
 
                 ],
@@ -241,7 +187,7 @@ class MessageStreamBuilder extends StatelessWidget {
         List<MessageLine> messageWidgets =[];
         if(!snapchot.hasData){
           return Center(
-            child: CircularProgressIndicator(backgroundColor: Color(0xFF128C7E),),
+            child: CircularProgressIndicator(backgroundColor: Color(0xFF272F3A),),
           );
         }
 
@@ -249,21 +195,31 @@ class MessageStreamBuilder extends StatelessWidget {
         for(var message in messages){
           //final messageText = Aes.decryptWithAESKey(message.get('text'));
           final messageText = message.get('text');
-          String messageText3 = Aes.dencryptAes(messageText!);
+
+          Aes.setkey32(message.get('key32'));
+          Aes.setiv16(message.get('iv16'));
+
+          String messageText3 = Aes.denAes(messageText!);
 
           //String textdec = Aes.decryptWithAESKey(messageText);
 
-          final messageSender = message.get('sender');
+          var messageSender = message.get('sender');
+
+          //final currentUser = signedInUser.displayName;
           final currentUser = signedInUser.email;
 
           if(currentUser == messageSender){
+            messageSender = "Me";
 
+          }else{
+            messageSender = message.get('username');
           }
 
           final messageWidget = MessageLine(
             sender: messageSender,
             text: messageText3,
-            isMe:currentUser == messageSender,);
+            isMe:messageSender == "Me",);
+          // isMe:currentUser == messageSender,);
 
           messageWidgets.add(messageWidget);
         }
@@ -297,7 +253,7 @@ class MessageLine extends StatelessWidget {
       child: Column(
         crossAxisAlignment: isMe ?  CrossAxisAlignment.end : CrossAxisAlignment.start,
         children: [
-          Text("$sender",style: TextStyle(fontSize: 12,fontFamily: 'ElMessiri',color: Color(0xFF075E54),)),
+          Text("$sender",style: TextStyle(fontSize: 12,fontFamily: 'ElMessiri',color: Color(0xFF272F3A),)),
           Material(
             elevation: 5,
             borderRadius: BorderRadius.only(
@@ -305,7 +261,7 @@ class MessageLine extends StatelessWidget {
               bottomLeft: Radius.circular(30),
               bottomRight: Radius.circular(30),
             ),
-            color: isMe ?  Color(0xFF949596) : Color(0xFF128C7E),
+            color: isMe ?  Color(0xFF949596) : Color(0xFF272F3A),
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 10 , horizontal: 20),
               child: Text("$text ",

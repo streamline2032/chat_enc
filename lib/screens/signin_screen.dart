@@ -1,7 +1,6 @@
 import 'package:chat_enc/screens/chat_screen.dart';
 import 'package:chat_enc/widgets/my_button.dart';
 import 'package:flutter/material.dart';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
@@ -32,9 +31,20 @@ class _SignInScreenState extends State<SignInScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Container(
+             /* Container(
                 height: 180,
                 child: Image.asset('images/logo.png'),
+              ),*/
+              Center(child:
+              Text(
+                'Log in',
+                style: TextStyle(
+                  fontSize: 40,
+                  fontFamily: 'ElMessiri',
+                  fontWeight: FontWeight.w900,
+                  color: Color(0xff2e386b),
+                ),
+              ),
               ),
               SizedBox(height: 50),
               TextField(
@@ -44,7 +54,7 @@ class _SignInScreenState extends State<SignInScreen> {
                   email = value;
                 },
                 decoration: InputDecoration(
-                  hintText: 'الإيميل',
+                  hintText: 'email',
                   hintStyle: TextStyle(fontFamily: 'ElMessiri',),
                   contentPadding: EdgeInsets.symmetric(
                     vertical: 10,
@@ -57,7 +67,7 @@ class _SignInScreenState extends State<SignInScreen> {
                   ),
                   enabledBorder: OutlineInputBorder(
                     borderSide: BorderSide(
-                      color: Color(0xFF075E54),
+                      color: Color(0xFF272F3A),
                       width: 1,
                     ),
                     borderRadius: BorderRadius.all(
@@ -83,7 +93,7 @@ class _SignInScreenState extends State<SignInScreen> {
                   password = value;
                 },
                 decoration: InputDecoration(
-                  hintText: 'كلمة السر',
+                  hintText: 'password',
                   hintStyle: TextStyle(fontFamily: 'ElMessiri',),
                   contentPadding: EdgeInsets.symmetric(
                     vertical: 10,
@@ -96,7 +106,7 @@ class _SignInScreenState extends State<SignInScreen> {
                   ),
                   enabledBorder: OutlineInputBorder(
                     borderSide: BorderSide(
-                      color: Color(0xFF075E54),
+                      color: Color(0xFF272F3A),
                       width: 1,
                     ),
                     borderRadius: BorderRadius.all(
@@ -116,8 +126,8 @@ class _SignInScreenState extends State<SignInScreen> {
               ),
               SizedBox(height: 10),
               MyButton(
-                color: Color(0xFF075E54)!,
-                title: 'تسجيل دخول',
+                color: Color(0xFF272F3A)!,
+                title: 'log in',
                 onPressed: () async {
                   setState(() {
                     showSpinner = true;
